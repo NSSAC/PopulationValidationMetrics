@@ -1,3 +1,4 @@
 Network File = net
 Population File = person.txt
-Age Groups = PolyMod
+# Age Groups = PolyMod
+Age Groups = CDC

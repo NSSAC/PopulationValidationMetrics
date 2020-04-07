@@ -150,6 +150,8 @@ int ContactMatrix::index(const string & a, const string & b) const
 	
 void ContactMatrix::print(ostream & os) const
 {
+	const string header("src_age,dst_age,num_contacts,total_duration,num_people");
+	os << header << endl;
 	for (int a = 0; a < getNumGroups(); a++)
 	{
 		for (int b = 0; b < getNumGroups(); b++)

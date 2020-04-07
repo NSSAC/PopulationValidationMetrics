@@ -23,8 +23,11 @@ using namespace std;
 
 class ContactMatrix {
 	public :
-	ContactMatrix(void) : fData(getNumGroups() * getNumGroups()) {};
+	ContactMatrix(void) : fData(getNumGroups() * getNumGroups()), fPopSize(getNumGroups()) 
+		{for (int i=0; i<fData.size(); i++) {fData[i] = make_pair(0, 0.0);}};
 
+	void addPerson(const string & a)
+		{fPopSize[ageToIndex(a)]++;};
 	void addCount(const string & a, const string & b, long count = 0)
 		{fData[index(a,b)].first += count;};
 
@@ -41,6 +44,7 @@ class ContactMatrix {
 	protected :
 
 	vector<pair<long, double> > fData;
+	vector<long> fPopSize;
 
 	string name(int ageGroup) const;
 	int ageToIndex(const string & a) const;

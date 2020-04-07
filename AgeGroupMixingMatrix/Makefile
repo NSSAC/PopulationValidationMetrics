@@ -1,5 +1,5 @@
 CXX  := g++ 
-EXEC    := Contacts.C HHContact.C
+EXEC    := Contacts.C 
 TARGET  := ${EXEC:.C=} 
 CFGDIR  := Config
 SRCS    := ContactErr.C ContactMatrix.C CSVParser.C BitArray.C Utilities.C $(wildcard $(CFGDIR)/*.C)
@@ -18,9 +18,6 @@ COMPILE = $(CXX) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH)
 GIT := $(shell command -v git 2> /dev/null)
 
 all : ${TARGET}
-
-HHContact : ${OBJS} ${HEADERS} HHContact.o Makefile
-	${COMPILE} $(OBJS) $@.C -o $@ 
 
 Contacts : ${OBJS} ${HEADERS} Contacts.o Makefile
 	${COMPILE} $(OBJS) $@.C -o $@ ${LDFLAGS} 
