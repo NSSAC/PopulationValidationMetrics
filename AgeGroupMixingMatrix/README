@@ -1,21 +1,22 @@
 Code to create mixing matrices from a synthetic U.S. population together with contact networks.
+To build, "touch Version.C" the first time, then "make". To test, "cd test; ../Contacts cfg".
 
 The code is designed to run on one U.S. state at a time. A separate matrix is created for each
 county in the state and placed in a file labeled with the FIPS code. In addition, a single matrix 
 for the entire state is created. Each edge in a network contributes to two contacts in the matrices,
-but the contributions may appear in different matrices depending on whether the people involved
+but the contributions may appear in different county matrices depending on whether the people involved
 live in the same county. The contact matrices are disaggregated by age groups, either the CDC groups
 or the PolyMod groups, depending on the value of the "Age Groups" key in the configuration file.
 Because contacts may be assigned to two different counties, the contact matrices may not be symmetric
 by age. 
 
 Each element of a contact matrix is a tuple consisting of 
-{number of contacts, total duration of contacts, number of people in the "source" age group}
+{number of contacts, total duration of contacts, number of people in the "source" age group}.
 These values, plus identifying strings for the source and destination age groups, are placed in a
 comma-separated value file with one header line, with each row of the file containing one entry of 
-the matrix.
+the matrix. Note that contact durations are given in fractional days!!
 
 When the configuration key "Network File" is empty or not specified, the contact network only 
 represents contacts within a household. Each household is assumed to form a clique (complete graph).
-In this case, the duration of contacts field is not present in the output.
+In this case, the total duration of contacts is the same as the number of contacts.
 
