@@ -20,14 +20,8 @@ using namespace std;
 const string kDefVerbosity = "2";
 const string kDefConfigVersion = "2016";
 
-const string kDefAgeGroup = "CDC";
+const string kDefNetworkFile = "";
 
-const string kDefHHIdFieldName = "HID";
-const string kDefPersonIdFieldName = "PID";
-const string kDefAgeFieldName = "AGE";
-const string kDefGenderFieldName = "SEX";
-const string kDefGradeFieldName = "GRADE_LEVEL_ATTENDING";
-const string kDefAreaFieldName = "area_sqm";
-const string kDefPreKFieldName = "pub_pk";
+const string kDefAgeGroup = "CDC";
 
 #endif

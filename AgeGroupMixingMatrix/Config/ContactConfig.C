@@ -116,7 +116,7 @@ void ContactConfig::Initialize(void)
 	addParam(sp);
 	sp->SetHint(kConfigFileToolTip);
 	
-	sp = new Param<string>(fCCS.NetworkFileKey, req);
+	sp = new Param<string>(fCCS.NetworkFileKey, notReq, kDefNetworkFile);
 	sp->SetGroup(fileNames);
 	addParam(sp);
 	sp->SetHint(kNetworkFileToolTip);
@@ -267,7 +267,7 @@ bool ContactConfig::IsValid(bool testFileAccess) {
 	}
 
 	bp = getParam(fCCS.NetworkFileKey);
-	if (testFileAccess &&  ! bp->IsReadable() )
+	if (bp->GetStringVal().length() > 0 && testFileAccess &&  ! bp->IsReadable() )
 	{
 		cerr << "network file '" << bp->GetStringVal() << "' is not readable" << endl;
 		Valid = false;

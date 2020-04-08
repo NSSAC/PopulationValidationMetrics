@@ -31,10 +31,13 @@ class ContactMatrix {
 	void addCount(const string & a, const string & b, long count = 0)
 		{fData[index(a,b)].first += count;};
 
-	void addDuration(const string & a, const string & b, double dur)
+	void addDuration(const string & a, const string & b, double dur = 86400.0)
 		{int idx = index(a,b); fData[idx].first++; fData[idx].second += dur;};
 
 	long count(const string & a, const string & b) const {return fData[index(a,b)].first;};
+	long countAll(void) const 
+		{int rtn=0; for (int i=0; i<fData.size(); i++) {rtn += fData[i].first;} return rtn;};
+
 	double duration(const string & a, const string & b) const {return fData[index(a,b)].second;};
 	
 	void print(ostream & os) const;

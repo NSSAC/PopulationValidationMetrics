@@ -136,9 +136,10 @@ int ContactMatrix::ageToIndex(const string & a) const
 	istringstream is(a);
 	int age;
 	is >> age;
+	int rtn = age / 5;
 	if (age >= 70)
-		return kPOLYMODNumGroups - 1;
-	return (age / 5);
+		rtn = kPOLYMODNumGroups - 1;
+	return rtn;
 }
 
 int ContactMatrix::index(const string & a, const string & b) const
@@ -154,12 +155,14 @@ void ContactMatrix::print(ostream & os) const
 	os << header << endl;
 	for (int a = 0; a < getNumGroups(); a++)
 	{
+		long pop = fPopSize[a];
 		for (int b = 0; b < getNumGroups(); b++)
 		{
 			int idx = a * getNumGroups() + b;
 			os << name(a) << ',' << name(b) 
 			   << ',' << fData[idx].first 
 			   << ',' << fData[idx].second / 86400.0
+			   << ',' << pop
 			   << endl;
 		}
 	}

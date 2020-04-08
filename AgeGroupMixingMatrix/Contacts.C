@@ -43,7 +43,9 @@ map<countyType, ContactMatrix> gCounts;
 bool readPopulation(const string & fName, bool useCDCAgeGroups);
 
 map<countyType, ContactMatrix> gContacts;
-ContactMatrix gState;
+ContactMatrix * gStatePtr = 0; 
+// don't create actual object until after we know whether we're using CDC age groups 
+// bcs array is initialized wrong size
 
 // Function that populates the gContacts network if there's no network file
 bool readAtHomeNetwork(const string & fName, bool useCDCAgeGroups);
@@ -86,31 +88,46 @@ int main(int argc, char **argv)
 	string ageGroups = config.GetAgeGroups();
 	const bool useCDCAgeGroups = (ageGroups == "CDC");
 	ContactMatrix::setAgeGroup(useCDCAgeGroups);
+	gStatePtr = new ContactMatrix;
 
-	string fName = config.GetPopFile();
+	string popName = config.GetPopFile();
 	string netFile = config.GetNetworkFile();
+	clog << "Network file is '" << netFile << "' length " << netFile.length() << endl;
 	const bool atHome = (netFile.length() == 0);
+
+	string base = outFName;
+
 	if (atHome)
 	{
-		readAtHomeNetwork(fName, useCDCAgeGroups);
+		readAtHomeNetwork(popName, useCDCAgeGroups);
+
+                string fName = outFName + ".txt";
+        	ofstream os(fName);
+        	os << *gStatePtr;
+        	os.close();
+
         	for (auto it = gContacts.begin(); it != gContacts.end(); it++)
         	{
+			if (it->first == -1)
+			{
+				if (it->second.countAll() > 0)
+					cerr << "Unknown county\n" << it->second << endl;
+				continue;
+			}
+
                 	stringstream oss;
                 	oss << it->first;
-                	string fName = netFile + "-" + oss.str();
+                	fName = outFName + "-" + oss.str() + ".txt";
                 	ofstream os(fName);
 	
-                	const ContactMatrix & cm = it->second;
+                	ContactMatrix & cm = it->second;
                 	os << cm;
                 	os.close();
         	}
-        	ofstream os(netFile);
-        	os << gState;
-        	os.close();
 		return 0;
 	}
 
-	readPopulation(fName, useCDCAgeGroups);
+	readPopulation(popName, useCDCAgeGroups);
 
 	CSVParser netFS(netFile);
 	++netFS;
@@ -129,31 +146,35 @@ int main(int argc, char **argv)
 		myAgeType dstAge = gPeople[dst].first;
 		ContactMatrix & cm = gCounts[county];
 		cm.addDuration(srcAge, dstAge, dur);
-		gState.addDuration(srcAge, dstAge, dur);
+		gStatePtr->addDuration(srcAge, dstAge, dur);
 		++netFS;
 		added++;
 		if (added % 1000000 == 0)
 			cout << "Added " << added/1000000 << " million contacts" << endl;
 	}
 
-	// size_t start = netFile.find_last_of("/");
-	// netFile = netFile.substr(start+1, netFile.length()-start);
-	string base = outFName;
-	base += "-cm";
+	string fName = outFName + ".txt";
+	ofstream os(fName);
+	os << *gStatePtr;
+	os.close();
+
 	for (auto it = gCounts.begin(); it != gCounts.end(); it++)
 	{
+		if (it->first == -1)
+		{
+			if (it->second.countAll() > 0)
+				cerr << "Unknown county\n" << it->second << endl;
+			continue;
+		}
 		stringstream oss;
 		oss << it->first;
-		string fName = base + "-" + oss.str();
+		fName = outFName + "-" + oss.str() + ".txt";
 		ofstream os(fName);
 		
 		const ContactMatrix & cm = it->second;
 		os << cm;
 		os.close();
 	}
-	ofstream os(base);
-	os << gState;
-	os.close();
 
 	return 0;
 }
@@ -174,7 +195,7 @@ bool readPopulation(const string & popFName, bool useCDCAgeGroups)
 			break;
 		ContactMatrix & cm = gCounts[county];
 		cm.addPerson(age);
-		gState.addPerson(age);
+		gStatePtr->addPerson(age);
 		gPeople.insert(make_pair(pid, make_pair(age, county)));
 		++popFS;
 	}
@@ -207,11 +228,13 @@ bool readAtHomeNetwork(const string & popFName, bool useCDCAgeGroups)
 			for (int i=0; i<numInHH; i++)
 			{
 				cm.addPerson(ages[i]);
-				gState.addPerson(ages[i]);
+				gStatePtr->addPerson(ages[i]);
 				for (int j=i+1; j<numInHH; j++)
 				{
 					cm.addCount(ages[i], ages[j]);
-					gState.addCount(ages[i], ages[j]);
+					cm.addDuration(ages[i], ages[j]);
+					gStatePtr->addCount(ages[i], ages[j]);
+					gStatePtr->addDuration(ages[i], ages[j]);
 				}
 			}
 			prev = hhid;
