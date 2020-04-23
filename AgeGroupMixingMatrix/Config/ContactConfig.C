@@ -291,7 +291,7 @@ bool ContactConfig::IsValid(bool testFileAccess) {
 	bp->SetStringVal("");
 	if (testFileAccess)   // IsWritable doesn't handle directories correctly
 	{
-		if (mkdir(dname.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0)
+		if (dname.length() != 0 && mkdir(dname.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0)
 		{
 			if (errno != EEXIST)
 			{
