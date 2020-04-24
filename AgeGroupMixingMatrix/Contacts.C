@@ -28,7 +28,7 @@
 
 using namespace std;
 
-typedef long countyType;
+typedef string countyType;
 typedef string myAgeType;
 typedef long personIdType;
 typedef long hhIdType;
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
         	for (auto it = gContacts.begin(); it != gContacts.end(); it++)
         	{
-			if (it->first == -1)
+			if (it->first == "-1")
 			{
 				if (it->second.countAll() > 0)
 					cerr << "Unknown county\n" << it->second << endl;
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 
 	for (auto it = gCounts.begin(); it != gCounts.end(); it++)
 	{
-		if (it->first == -1)
+		if (it->first == "-1")
 		{
 			if (it->second.countAll() > 0)
 				cerr << "Unknown county\n" << it->second << endl;
@@ -190,7 +190,7 @@ bool readPopulation(const string & popFName, bool useCDCAgeGroups)
 	{
 		personIdType pid = popFS.getLong(idCol);
 		myAgeType age = popFS[ageCol];
-		countyType county = popFS.getLong(fipsCol);
+		countyType county = popFS[fipsCol];
 		if (! popFS)
 			break;
 		ContactMatrix & cm = gCounts[county];
@@ -216,7 +216,7 @@ bool readAtHomeNetwork(const string & popFName, bool useCDCAgeGroups)
 	hhIdType prev = -1;
 	vector<myAgeType> ages(100);
 	int numInHH = 0;
-	countyType county = -1;
+	countyType county = "-1";
 	while (popFS)
 	{
 		personIdType pid = popFS.getLong(idCol);
@@ -246,7 +246,7 @@ bool readAtHomeNetwork(const string & popFName, bool useCDCAgeGroups)
 		}
 		if (! popFS)
 			break;
-		county = popFS.getLong(fipsCol);
+		county = popFS[fipsCol];
 		ages[numInHH] = age;
 		numInHH++;
 		++popFS;
