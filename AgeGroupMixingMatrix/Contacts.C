@@ -232,8 +232,12 @@ bool readAtHomeNetwork(const string & popFName, bool useCDCAgeGroups)
 				for (int j=i+1; j<numInHH; j++)
 				{
 					cm.addCount(ages[i], ages[j]);
+					cm.addCount(ages[j], ages[i]);
 					cm.addDuration(ages[i], ages[j]);
+					cm.addDuration(ages[j], ages[i]);
 					gStatePtr->addCount(ages[i], ages[j]);
+					gStatePtr->addCount(ages[j], ages[i]);
+					gStatePtr->addDuration(ages[j], ages[i]);
 					gStatePtr->addDuration(ages[i], ages[j]);
 				}
 			}
