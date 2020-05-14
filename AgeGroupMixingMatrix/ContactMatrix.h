@@ -23,7 +23,7 @@ using namespace std;
 
 class ContactMatrix {
 	public :
-	ContactMatrix(void) : fData(getNumGroups() * getNumGroups()), fPopSize(getNumGroups()) 
+	ContactMatrix(void) : fData(getNumGroups() * getNumGroups()), fPopSize(getNumGroups())
 		{for (int i=0; i<fData.size(); i++) {fData[i] = make_pair(0, 0.0);}};
 
 	void addPerson(const string & a)
@@ -35,11 +35,11 @@ class ContactMatrix {
 		{int idx = index(a,b); fData[idx].first++; fData[idx].second += dur;};
 
 	long count(const string & a, const string & b) const {return fData[index(a,b)].first;};
-	long countAll(void) const 
+	long countAll(void) const
 		{int rtn=0; for (int i=0; i<fData.size(); i++) {rtn += fData[i].first;} return rtn;};
 
 	double duration(const string & a, const string & b) const {return fData[index(a,b)].second;};
-	
+
 	void print(ostream & os) const;
 
 	static void setAgeGroup(bool CDC = true) {fUseCDC = CDC;};
@@ -54,7 +54,9 @@ class ContactMatrix {
 	int index(const string & a, const string & b) const;
 
 	enum {kCDCUnknown=-1, kCDCPreschool, kCDCSchool, kCDCAdult, kCDCOlder, kCDCGolden, kCDCNumGroups};
-	enum {kPOLYMODUnknown=-1, kPOLYMODNumGroups=15};
+  // HSM: adjusted number of groups to incorporate 75-79 or 75+:
+  //	enum {kPOLYMODUnknown=-1, kPOLYMODNumGroups=15};
+  	enum {kPOLYMODUnknown=-1, kPOLYMODNumGroups=16};
 	static bool fUseCDC;  // hack alert: OK for two age group schemes, but unwieldy for more
 
 	static int getNumGroups(void) {return (fUseCDC) ? kCDCNumGroups : kPOLYMODNumGroups;};

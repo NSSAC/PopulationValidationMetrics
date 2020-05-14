@@ -26,7 +26,7 @@ string ContactMatrix::name(int ageGroup) const
 	{
 		switch (ageGroup)
 		{
-			case kCDCPreschool: 
+			case kCDCPreschool:
 				rtn = "p";
 				break;
 
@@ -52,10 +52,10 @@ string ContactMatrix::name(int ageGroup) const
 		}
 		return rtn;
 	}
-	
+
 	switch ( ageGroup )
 	{
-		case 0: 
+		case 0:
 			rtn = "0-4";
 			break;
 
@@ -111,8 +111,14 @@ string ContactMatrix::name(int ageGroup) const
 			rtn = "65-69";
 			break;
 
+// HSM: adding and adjusting cases.
+
 		case 14:
-			rtn = "70+";
+			rtn = "70-74";
+			break;
+
+		case 15:
+			rtn = "75+";
 			break;
 			default:
 				cerr << "Don't recognize age group " << ageGroup << endl;
@@ -148,7 +154,7 @@ int ContactMatrix::index(const string & a, const string & b) const
 	int i2 = ageToIndex(b);
 	return i1 * getNumGroups() + i2;
 }
-	
+
 void ContactMatrix::print(ostream & os) const
 {
 	const string header("src_age,dst_age,num_contacts,total_duration,num_people");
@@ -159,8 +165,8 @@ void ContactMatrix::print(ostream & os) const
 		for (int b = 0; b < getNumGroups(); b++)
 		{
 			int idx = a * getNumGroups() + b;
-			os << name(a) << ',' << name(b) 
-			   << ',' << fData[idx].first 
+			os << name(a) << ',' << name(b)
+			   << ',' << fData[idx].first
 			   << ',' << fData[idx].second / 86400.0
 			   << ',' << pop
 			   << endl;
