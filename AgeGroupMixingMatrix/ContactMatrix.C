@@ -47,7 +47,7 @@ string ContactMatrix::name(int ageGroup) const
 				break;
 
 			default:
-				cerr << "Don't recognize age group " << ageGroup << endl;
+				cerr << "Unrecognized age group " << ageGroup << endl;
 				exit(403);
 		}
 		return rtn;
@@ -56,72 +56,72 @@ string ContactMatrix::name(int ageGroup) const
 	switch ( ageGroup )
 	{
 		case 0:
-			rtn = "0-4";
+			rtn = "age_00_04";
 			break;
 
 		case 1:
-			rtn = "5-9";
+			rtn = "age_05_09";
 			break;
 
 		case 2:
-			rtn = "10-14";
+			rtn = "age_10_14";
 			break;
 
 		case 3:
-			rtn = "15-19";
+			rtn = "age_15_19";
 			break;
 
 		case 4:
-			rtn = "20-24";
+			rtn = "age_20_24";
 			break;
 
 		case 5:
-			rtn = "25-29";
+			rtn = "age_25_29";
 			break;
 
 		case 6:
-			rtn = "30-34";
+			rtn = "age_30_34";
 			break;
 
 		case 7:
-			rtn = "35-39";
+			rtn = "age_35_39";
 			break;
 
 		case 8:
-			rtn = "40-44";
+			rtn = "age_40_44";
 			break;
 
 		case 9:
-			rtn = "45-49";
+			rtn = "age_45_49";
 			break;
 
 		case 10:
-			rtn = "50-54";
+			rtn = "age_50_54";
 			break;
 
 		case 11:
-			rtn = "55-59";
+			rtn = "age_55_59";
 			break;
 
 		case 12:
-			rtn = "60-64";
+			rtn = "age_60_64";
 			break;
 
 		case 13:
-			rtn = "65-69";
+			rtn = "age_65_69";
 			break;
 
 // HSM: adding and adjusting cases.
 
 		case 14:
-			rtn = "70-74";
+			rtn = "age_70_74";
 			break;
 
 		case 15:
-			rtn = "75+";
+			rtn = "age_75_79";
 			break;
 			default:
-				cerr << "Don't recognize age group " << ageGroup << endl;
+				cerr << "Unrecognized age group " << ageGroup << endl;
 				exit(404);
 	}
 	return rtn;
@@ -136,7 +136,7 @@ int ContactMatrix::ageToIndex(const string & a) const
 		if (a == "a") return kCDCAdult;
 		if (a == "o") return kCDCOlder;
 		if (a == "g") return kCDCGolden;
-		cerr << "Don't recognize age group '" << a << "'" << endl;
+		cerr << "Unrecognized age group '" << a << "'" << endl;
 		exit(404);
 	}
 	istringstream is(a);
