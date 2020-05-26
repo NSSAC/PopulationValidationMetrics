@@ -143,7 +143,9 @@ int ContactMatrix::ageToIndex(const string & a) const
 	int age;
 	is >> age;
 	int rtn = age / 5;
-	if (age >= 70)
+	// HSM
+	// if (age >= 70)
+	if (age >= 75)
 		rtn = kPOLYMODNumGroups - 1;
 	return rtn;
 }
